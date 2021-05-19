@@ -73,3 +73,7 @@ $ python predict.py [동영상 클립 폴더 경로]
 대회에 사용된 총 학습 영상은 약 2500장입니다.   
 250장의 Test set에 대해서 검출(Detection) 성능평가를 한 결과, mAP@Iou0.5에 대해선 99.8%, mAP@Iou0.5:0.95에 대해선 80.2%를 얻었습니다.    
 Tracking 성능을 포함한 대회 최종 성적은 mAP@Iou0.75에 대해서 60.2%를 기록하여 5위를 기록했습니다.   
+   
+## Contact
+   
+another0430@naver.com
