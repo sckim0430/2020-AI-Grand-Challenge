@@ -28,10 +28,9 @@ $ pip install -r requirements.txt
    
 ## Custom Dataset
    
-./data/에서 Dataset 환경 설정하는 **yaml 파일**을 생성합니다. 대회에서 사용한 yaml 파일은 다음과 같습니다.   
-[YAML](https://github.com/sckim0430/2020-AI-Grand-Challenge-Abnormal-behavior-detection-Track/blob/master/data/lying_person.yaml)
-   
-./data/에서 각각 **images**와 **lables** 하위 폴더를 생성하고, 각 하위 폴더 내에 **train**, **val**폴더를 생성하여 데이터를 저장합니다.
+./data/에서 Dataset 환경 설정하는 [YAML](https://github.com/sckim0430/2020-AI-Grand-Challenge-Abnormal-behavior-detection-Track/blob/master/data/lying_person.yaml)을 생성합니다.   
+      
+./data/에서 각각 **images**와 **lables** 하위 폴더를 생성하고, 각 하위 폴더 내에 **train**, **validation**폴더를 생성하여 데이터를 저장합니다.
    
    
 <p align="left"><img src="https://user-images.githubusercontent.com/63839581/118771505-97cc2400-b8bd-11eb-8a0f-54302ddf269c.jpg" width="600"></p>
