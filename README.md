@@ -1,7 +1,8 @@
 # 2020 AI Grand Challenge 이상행동 감지 Track
    
-## Description
 <p align="center"><img src="https://user-images.githubusercontent.com/63839581/118762705-9e549e80-b8b1-11eb-9295-cc2e3cc9f969.jpg" width="1050"></p>
+   
+## Description
    
 이 프로젝트는 과학기술정보통신부에서 주최한 2020 AI Grand Challenge 공모전 이상행동 감지 Track 문제를 해결하는 것을 목표로 합니다.   
    
