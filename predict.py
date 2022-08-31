@@ -1,3 +1,5 @@
+"""2020 AI Grand Challenge Predict Src
+"""
 import os, sys
 import json
 
@@ -6,21 +8,25 @@ sys.path.insert(0,base_path)
 
 from pathlib import Path
 
-import cv2
 import torch
-import torch.backends.cudnn as cudnn
 import numpy as np
 
-import torchvision
 
 from models.experimental import attempt_load
-from utils.datasets import LoadStreams, LoadImages,create_dataloader
-from utils.general import check_img_size, non_max_suppression, apply_classifier, scale_coords, xyxy2xywh, \
-    strip_optimizer, set_logging, increment_path
-from utils.torch_utils import select_device, load_classifier, time_synchronized
+from utils.datasets import create_dataloader
+from utils.general import check_img_size, non_max_suppression, scale_coords
+from utils.torch_utils import select_device
 
 def iou_matching(bbox, candidates):
-    
+    """IOU Matching
+
+    Args:
+        bbox (np.ndarray): gt bbox coordinates array
+        candidates (np.ndarray): predict bbox coordinates array
+
+    Returns:
+        int, float: Candidate Bbox index, IOU
+    """
     if candidates.size == 0:
         return -1,-1
 
@@ -105,9 +111,9 @@ def main(string):
             
             with torch.no_grad():
                 # Run model
-                inf_out, train_out = model(img, augment=True)  # inference and training outputs
-                inf_out2, train_out2 = model2(img,augment=True)
-                inf_out3, train_out3 = model3(img,augment=True)
+                inf_out, _ = model(img, augment=True)  # inference and training outputs
+                inf_out2, _ = model2(img,augment=True)
+                inf_out3, _ = model3(img,augment=True)
                 
                 inf_out = torch.cat([inf_out,inf_out2,inf_out3],1)
                 
