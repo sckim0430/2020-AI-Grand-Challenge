@@ -3,7 +3,10 @@
 <p align="center"><img src="https://user-images.githubusercontent.com/63839581/118762705-9e549e80-b8b1-11eb-9295-cc2e3cc9f969.jpg" width="1050"></p>
    
 ## Description
-   
+
+> #### 이 프로젝트는 [Yolov5](https://github.com/ultralytics/yolov5)를 기반으로 작성되었음을 밝힙니다.
+
+
 이 저장소는 과학기술정보통신부에서 주최한 2020 AI Grand Challenge 공모전 이상행동 감지 Track 문제를 해결하는 것을 목표로 합니다.   
    
 이상행동 감지 Track의 주제는 실시간 cctv 영상내에서 발생하는 실신 행위에 대한 검출 및 추적입니다. 그리고 대회 규정은 대표적으로 다음과 같습니다.   
