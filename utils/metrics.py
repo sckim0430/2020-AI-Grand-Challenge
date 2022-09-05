@@ -39,7 +39,8 @@ def ap_per_class(tp, conf, pred_cls, target_cls, plot=False, save_dir='precision
     # Create Precision-Recall curve and compute AP for each class
     px, py = np.linspace(0, 1, 1000), []  # for plotting
     pr_score = 0.1  # score to evaluate P and R https://github.com/ultralytics/yolov3/issues/898
-    s = [unique_classes.shape[0], tp.shape[1]]  # number class, number iou thresholds (i.e. 10 for mAP0.5...0.95)
+    # number class, number iou thresholds (i.e. 10 for mAP0.5...0.95)
+    s = [unique_classes.shape[0], tp.shape[1]]
     ap, p, r = np.zeros(s), np.zeros(s), np.zeros(s)
     for ci, c in enumerate(unique_classes):
         i = pred_cls == c
@@ -55,17 +56,21 @@ def ap_per_class(tp, conf, pred_cls, target_cls, plot=False, save_dir='precision
 
             # Recall
             recall = tpc / (n_l + 1e-16)  # recall curve
-            r[ci] = np.interp(-pr_score, -conf[i], recall[:, 0])  # r at pr_score, negative x, xp because xp decreases
+            # r at pr_score, negative x, xp because xp decreases
+            r[ci] = np.interp(-pr_score, -conf[i], recall[:, 0])
 
             # Precision
             precision = tpc / (tpc + fpc)  # precision curve
-            p[ci] = np.interp(-pr_score, -conf[i], precision[:, 0])  # p at pr_score
+            p[ci] = np.interp(-pr_score, -conf[i],
+                              precision[:, 0])  # p at pr_score
 
             # AP from recall-precision curve
             for j in range(tp.shape[1]):
-                ap[ci, j], mpre, mrec = compute_ap(recall[:, j], precision[:, j])
+                ap[ci, j], mpre, mrec = compute_ap(
+                    recall[:, j], precision[:, j])
                 if plot and (j == 0):
-                    py.append(np.interp(px, mrec, mpre))  # precision at mAP@0.5
+                    # precision at mAP@0.5
+                    py.append(np.interp(px, mrec, mpre))
 
     # Compute F1 score (harmonic mean of precision and recall)
     f1 = 2 * p * r / (p + r + 1e-16)
@@ -99,7 +104,8 @@ def compute_ap(recall, precision):
         x = np.linspace(0, 1, 101)  # 101-point interp (COCO)
         ap = np.trapz(np.interp(x, mrec, mpre), x)  # integrate
     else:  # 'continuous'
-        i = np.where(mrec[1:] != mrec[:-1])[0]  # points where x axis (recall) changes
+        # points where x axis (recall) changes
+        i = np.where(mrec[1:] != mrec[:-1])[0]
         ap = np.sum((mrec[i + 1] - mrec[i]) * mpre[i + 1])  # area under curve
 
     return ap, mpre, mrec
@@ -130,12 +136,15 @@ class ConfusionMatrix:
 
         x = torch.where(iou > self.iou_thres)
         if x[0].shape[0]:
-            matches = torch.cat((torch.stack(x, 1), iou[x[0], x[1]][:, None]), 1).cpu().numpy()
+            matches = torch.cat(
+                (torch.stack(x, 1), iou[x[0], x[1]][:, None]), 1).cpu().numpy()
             if x[0].shape[0] > 1:
                 matches = matches[matches[:, 2].argsort()[::-1]]
-                matches = matches[np.unique(matches[:, 1], return_index=True)[1]]
+                matches = matches[np.unique(
+                    matches[:, 1], return_index=True)[1]]
                 matches = matches[matches[:, 2].argsort()[::-1]]
-                matches = matches[np.unique(matches[:, 0], return_index=True)[1]]
+                matches = matches[np.unique(
+                    matches[:, 0], return_index=True)[1]]
         else:
             matches = np.zeros((0, 3))
 
@@ -160,14 +169,18 @@ class ConfusionMatrix:
         try:
             import seaborn as sn
 
-            array = self.matrix / (self.matrix.sum(0).reshape(1, self.nc + 1) + 1E-6)  # normalize
-            array[array < 0.005] = np.nan  # don't annotate (would appear as 0.00)
+            array = self.matrix / \
+                (self.matrix.sum(0).reshape(1, self.nc + 1) + 1E-6)  # normalize
+            # don't annotate (would appear as 0.00)
+            array[array < 0.005] = np.nan
 
             fig = plt.figure(figsize=(12, 9), tight_layout=True)
             sn.set(font_scale=1.0 if self.nc < 50 else 0.8)  # for label size
-            labels = (0 < len(names) < 99) and len(names) == self.nc  # apply names to ticklabels
+            labels = (0 < len(names) < 99) and len(
+                names) == self.nc  # apply names to ticklabels
             sn.heatmap(array, annot=self.nc < 30, annot_kws={"size": 8}, cmap='Blues', fmt='.2f', square=True,
-                       xticklabels=names + ['background FN'] if labels else "auto",
+                       xticklabels=names +
+                       ['background FN'] if labels else "auto",
                        yticklabels=names + ['background FP'] if labels else "auto").set_facecolor((1, 1, 1))
             fig.axes[0].set_xlabel('True')
             fig.axes[0].set_ylabel('Predicted')
@@ -188,11 +201,13 @@ def plot_pr_curve(px, py, ap, save_dir='.', names=()):
 
     if 0 < len(names) < 21:  # show mAP in legend if < 10 classes
         for i, y in enumerate(py.T):
-            ax.plot(px, y, linewidth=1, label=f'{names[i]} %.3f' % ap[i, 0])  # plot(recall, precision)
+            # plot(recall, precision)
+            ax.plot(px, y, linewidth=1, label=f'{names[i]} %.3f' % ap[i, 0])
     else:
         ax.plot(px, py, linewidth=1, color='grey')  # plot(recall, precision)
 
-    ax.plot(px, py.mean(1), linewidth=3, color='blue', label='all classes %.3f mAP@0.5' % ap[:, 0].mean())
+    ax.plot(px, py.mean(1), linewidth=3, color='blue',
+            label='all classes %.3f mAP@0.5' % ap[:, 0].mean())
     ax.set_xlabel('Recall')
     ax.set_ylabel('Precision')
     ax.set_xlim(0, 1)
